@@ -65,6 +65,17 @@ void tokenize(string input)
                 cout << "<identifier , " << word << ">" << endl;
             }
         }
+        if (input[i] == '"')
+        {
+            cout << "<String , " << '"';
+            i++;
+            while (input[i] != '"')
+            {
+                cout << input[i];
+                i++;
+            }
+            cout << '"' << ">" << endl;
+        }
     }
 }
 
