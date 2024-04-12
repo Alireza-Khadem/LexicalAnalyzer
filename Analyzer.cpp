@@ -6,7 +6,6 @@ using namespace std;
 string letter[52] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 string digit[10] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 string reservedword[16] = {"int", "float", "void", "return", "if", "while", "cin", "cout", "continue", "break", "#include", "using", "namespace", "std", "main", "for"};
-
 string symbol[23] = {"(", ")", "{", "}", "[", "]", ",", ";", "+", "-", "*", "/", "==", "!=", ">", ">=", "<", "<=", "=", "&&", "||", "<<", ">>"};
 
 void tokenize(string input)
@@ -18,12 +17,14 @@ void tokenize(string input)
         {
             if (i + 1 < input.length() && find(begin(symbol), end(symbol), string(1, input[i + 1])) != end(symbol) && input[i + 1] != ')' && input[i + 1] != '}' && input[i + 1] != ']' && input[i + 1] != '{')
             {
-                cout << "<Symbol , " << input[i] << input[i + 1] << ">" << endl;
+                // if we have two chars symbol
+                cout << "<symbol , " << input[i] << input[i + 1] << ">" << endl;
                 i++;
             }
             else
             {
-                cout << "<Symbol , " << input[i] << ">" << endl;
+                // if we have one char symbol
+                cout << "<symbol , " << input[i] << ">" << endl;
             }
         }
         // digit & number tokenize
@@ -32,11 +33,12 @@ void tokenize(string input)
             string k = "";
             while (i + 1 < input.length() && find(begin(digit), end(digit), string(1, input[i + 1])) != end(digit))
             {
+                // read digits
                 k = k + input[i];
                 i++;
             }
             k = k + input[i];
-            cout << "<Number , " << k << ">" << endl;
+            cout << "<number , " << k << ">" << endl;
         }
         // reservedword & identifier tokenize
         else if (find(begin(letter), end(letter), string(1, input[i])) != end(letter))
@@ -44,6 +46,7 @@ void tokenize(string input)
             string word;
             while (find(begin(letter), end(letter), string(1, input[i])) != end(letter))
             {
+                // store letter while reading them
                 word += input[i];
                 i++;
             }
@@ -53,28 +56,33 @@ void tokenize(string input)
                 word = "#include";
                 while (input[i] != '>')
                 {
+                    // if read include while reading library name skip
                     i++;
                 }
             }
             if (find(begin(reservedword), end(reservedword), word) != end(reservedword))
             {
+                // if word was reservedword
                 cout << "<reservedword , " << word << ">" << endl;
             }
             else
             {
+                // if word was identifier
                 cout << "<identifier , " << word << ">" << endl;
             }
         }
-        if (input[i] == '"')
+        // if read '"' (string)
+        else if (input[i] == '"')
         {
-            cout << "<String , " << '"';
+            string output;
             i++;
             while (input[i] != '"')
             {
-                cout << input[i];
+                // while reading letters, store them
+                output += input[i];
                 i++;
             }
-            cout << '"' << ">" << endl;
+            cout << "<string , " << '"' << output << '"' << ">" << endl;
         }
     }
 }
@@ -85,6 +93,7 @@ int main()
     string input, temp;
     while (getline(file, temp))
     {
+        // reading input file line by line
         input += temp;
         if (temp == "")
         {
